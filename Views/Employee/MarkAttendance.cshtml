@@ -1,0 +1,65 @@
+﻿@model EmployeeAttendance.Models.EmpDetails
+
+<h2>Mark Attendance for @Model.Name</h2>
+
+@using (Html.BeginForm("SaveAttendance", "Employee", FormMethod.Post))
+{
+@Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.EmpId) <!-- Input fields for attendance with date selection and dynamic rows -->
+                                <div class="form-group">
+                                    @Html.Label("From Date:")
+                                    <input type="date" id="fromDate" name="fromDate" required />
+                                </div>
+
+                                                <div class="form-group">
+                                                    @Html.Label("To Date:")
+                                                    <input type="date" id="toDate" name="toDate" required />
+                                                </div>
+
+                                                                <table class="table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Date</th>
+                                                                            <th>Status</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="dates-container">
+                                                                        <!-- Dynamic rows for dates and statuses will be generated here -->
+                                                                    </tbody>
+                                                                </table>
+
+                                                                                <input type="submit" value="Save Attendance" class="btn btn-primary" />
+}
+
+@section scripts {
+    <script>
+        // Function to generate dynamic rows based on FromDate and ToDate
+        function generateDynamicRows() {
+            var fromDate = new Date(document.getElementById('fromDate').value);
+            var toDate = new Date(document.getElementById('toDate').value);
+            var datesContainer = document.getElementById('dates-container');
+            datesContainer.innerHTML = '';
+
+            for (var date = new Date(fromDate); date <= toDate; date.setDate(date.getDate() + 1)) {
+                var formattedDate = date.toISOString().slice(0, 10);
+                datesContainer.innerHTML += `
+                            <tr>
+                                <td>${formattedDate}</td>
+                                <td>
+                                    <select name="Status" class="form-control">
+                                        <option value="P">Present</option>
+                                        <option value="A">Absent</option>
+                                    </select>
+                                </td>
+                            </tr>`;
+            }
+        }
+
+        // Listen for changes in FromDate and ToDate inputs
+        document.getElementById('fromDate').addEventListener('change', generateDynamicRows);
+        document.getElementById('toDate').addEventListener('change', generateDynamicRows);
+
+        // Initial call to generate rows based on default values
+        generateDynamicRows();
+    </script>
+}

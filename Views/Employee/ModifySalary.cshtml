@@ -1,0 +1,33 @@
+﻿@model EmployeeAttendance.ViewModels.EmpDetailsViewModel
+
+<h2>Modify Salary for @Model.EmpDetails.Name</h2>
+
+@using (Html.BeginForm("SaveSalary", "Employee", FormMethod.Post))
+{
+@Html.HiddenFor(model => model.EmpDetails.EmpId)
+
+                <div class="form-group">
+                    <label asp-for="EmpSalaryDetails.Basic">Basic Salary</label>
+                    <input asp-for="EmpSalaryDetails.Basic" class="form-control" />
+                    <span asp-validation-for="EmpSalaryDetails.Basic" class="text-danger"></span>
+                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="EmpSalaryDetails.HRA">HRA (House Rent Allowance)</label>
+                                    <input asp-for="EmpSalaryDetails.HRA" class="form-control" />
+                                    <span asp-validation-for="EmpSalaryDetails.HRA" class="text-danger"></span>
+                                </div>
+
+                                                <div class="form-group">
+                                                    <label asp-for="EmpSalaryDetails.Others">Other Allowances</label>
+                                                    <input asp-for="EmpSalaryDetails.Others" class="form-control" />
+                                                    <span asp-validation-for="EmpSalaryDetails.Others" class="text-danger"></span>
+                                                </div>
+
+                                                                <input type="submit" value="Save Salary" class="btn btn-primary" />}
+
+@section scripts {
+    <script>
+            // You can leave this section as is; no changes are needed here.
+    </script>
+}
